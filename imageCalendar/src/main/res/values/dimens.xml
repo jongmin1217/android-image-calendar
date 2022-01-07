@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="dp_2" tools:ignore="SpUsage">2dp</dimen>
+    <dimen name="dp_4" tools:ignore="SpUsage">4dp</dimen>
+    <dimen name="dp_5" tools:ignore="SpUsage">5dp</dimen>
+    <dimen name="dp_6" tools:ignore="SpUsage">6dp</dimen>
+    <dimen name="dp_7" tools:ignore="SpUsage">7dp</dimen>
+    <dimen name="dp_8" tools:ignore="SpUsage">8dp</dimen>
+    <dimen name="dp_9" tools:ignore="SpUsage">9dp</dimen>
+    <dimen name="dp_10" tools:ignore="SpUsage">10dp</dimen>
+    <dimen name="dp_11" tools:ignore="SpUsage">11dp</dimen>
+    <dimen name="dp_12" tools:ignore="SpUsage">12dp</dimen>
+    <dimen name="dp_13" tools:ignore="SpUsage">13dp</dimen>
+    <dimen name="dp_14" tools:ignore="SpUsage">14dp</dimen>
+    <dimen name="dp_15" tools:ignore="SpUsage">15dp</dimen>
+    <dimen name="dp_16" tools:ignore="SpUsage">16dp</dimen>
+    <dimen name="dp_17" tools:ignore="SpUsage">17dp</dimen>
+    <dimen name="dp_18" tools:ignore="SpUsage">18dp</dimen>
+    <dimen name="dp_19" tools:ignore="SpUsage">19dp</dimen>
+    <dimen name="dp_20" tools:ignore="SpUsage">20dp</dimen>
+</resources>

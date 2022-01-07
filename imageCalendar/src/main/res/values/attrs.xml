@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="ImageCalendarView">
+        <attr name="bm_calendar_type" format="reference"/>
+        <attr name="init_date" format="string|reference"/>
+    </declare-styleable>
+</resources>
