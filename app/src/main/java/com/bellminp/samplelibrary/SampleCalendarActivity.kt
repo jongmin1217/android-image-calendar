@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.widget.TextView
 import com.bellminp.imagecalendar.Bellmin
 
-class MainActivity : AppCompatActivity() {
+class SampleCalendarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_sample_calendar)
 
         findViewById<TextView>(R.id.tv_test).setOnClickListener {
             Bellmin.action(this,"test")

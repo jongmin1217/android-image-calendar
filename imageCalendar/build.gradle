@@ -42,14 +42,6 @@ afterEvaluate {
                 artifactId = 'final'
                 version = '1.0'
             }
-
-            debug(MavenPublication) {
-                from components.debug
-
-                groupId = 'com.bellminp.imageCalendar'
-                artifactId = 'final-debug'
-                version = '1.0'
-            }
         }
     }
 }
