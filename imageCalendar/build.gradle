@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'maven-publish'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -69,11 +68,6 @@ dependencies {
 
     kapt "com.android.databinding:compiler:3.2.1"
 
-    implementation "com.google.dagger:hilt-android:2.38.1"
-    kapt "com.google.dagger:hilt-android-compiler:2.37"
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
@@ -99,5 +93,7 @@ dependencies {
     //glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
 }
