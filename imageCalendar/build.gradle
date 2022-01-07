@@ -4,8 +4,6 @@ plugins {
     id 'maven-publish'
 }
 
-group('com.github.jongmin1217')
-
 android {
     compileSdk 32
 

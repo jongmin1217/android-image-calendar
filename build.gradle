@@ -13,6 +13,12 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {}
+    group = 'com.github.JhDroid'
+}
+
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
