@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.tv_test).setOnClickListener {
             ToastClass.testToast(this,"hello world!!")
+
         }
     }
 }
