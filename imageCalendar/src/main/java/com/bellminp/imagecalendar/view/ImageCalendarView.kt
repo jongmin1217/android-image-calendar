@@ -11,7 +11,10 @@ import com.bellminp.imagecalendar.R
 import com.bellminp.imagecalendar.databinding.BmSelectCalendarBinding
 import com.bellminp.imagecalendar.utils.Utils
 import androidx.lifecycle.LifecycleOwner
+import com.bellminp.imagecalendar.adapter.DayAdapter
 import com.bellminp.imagecalendar.base.MvvmFrameLayout
+import com.bellminp.imagecalendar.model.DayData
+import com.bellminp.imagecalendar.utils.BindingAdapter
 import com.bellminp.imagecalendar.utils.LifecycleOwnerNotFoundException
 
 class ImageCalendarView @JvmOverloads constructor(
@@ -69,12 +72,24 @@ class ImageCalendarView @JvmOverloads constructor(
     }
 
     private fun drawView(){
-        title = if(language == resources.getString(R.string.kr)){
-            if(initDate == resources.getString(R.string.now)) String.format("%d년 %d월",Utils.getYear(),Utils.getMonth())
+        if(language == resources.getString(R.string.kr)){
+            title = if(initDate == resources.getString(R.string.now)) String.format("%d년 %d월",Utils.getYear(),Utils.getMonth())
             else String.format("%s년 %d월",initDate.split(".")[0],initDate.split(".")[1].toInt())
+
+            val dayList = ArrayList<DayData>()
+            for(i in 0..6){
+                dayList.add(DayData(i.toLong(),resources.getStringArray(R.array.kr_day)[i]))
+                BindingAdapter.dayAdapter(binding.recyclerviewDay, DayAdapter(dayList))
+            }
         }else{
-            if(initDate == resources.getString(R.string.now)) String.format("%s %d",Utils.getUkMonth(Utils.getMonth()),Utils.getYear())
+            title = if(initDate == resources.getString(R.string.now)) String.format("%s %d",Utils.getUkMonth(Utils.getMonth()),Utils.getYear())
             else String.format("%s %s",Utils.getUkMonth(initDate.split(".")[1].toInt()),initDate.split(".")[0])
+
+            val dayList = ArrayList<DayData>()
+            for(i in 0..6){
+                dayList.add(DayData(i.toLong(),resources.getStringArray(R.array.uk_day)[i]))
+                BindingAdapter.dayAdapter(binding.recyclerviewDay, DayAdapter(dayList))
+            }
         }
     }
 
