@@ -2,9 +2,11 @@ package com.bellminp.imagecalendar.view
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.bellminp.imagecalendar.base.MvvmCustomViewModel
+import androidx.lifecycle.ViewModel
 
-class ImageCalendarViewModel : MvvmCustomViewModel<ImageCalendarViewState> {
-    val title = MutableLiveData<String>()
+class ImageCalendarViewModel : ViewModel() {
+    private fun <T : Any?> MutableLiveData<T>.default(initialValue: T?) = apply { setValue(initialValue) }
+
+    val title = MutableLiveData<String>().default("")
 
 }

@@ -5,9 +5,10 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import com.bellminp.imagecalendar.utils.LifecycleOwnerNotFoundException
 
-abstract class MvvmFrameLayout<V : MvvmCustomViewState, T : MvvmCustomViewModel<V>>(
+abstract class MvvmFrameLayout<V : MvvmCustomViewState, T : ViewModel>(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

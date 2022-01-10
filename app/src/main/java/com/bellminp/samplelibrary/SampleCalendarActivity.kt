@@ -4,18 +4,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import com.bellminp.imagecalendar.view.ImageCalendarView
+import com.bellminp.samplelibrary.databinding.ActivitySampleCalendarBinding
 
 class SampleCalendarActivity : AppCompatActivity() {
+    private val viewModel : SampleCalendarViewModel by viewModels()
+    lateinit var binding: ActivitySampleCalendarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sample_calendar)
 
-        findViewById<Button>(R.id.tv_test).setOnClickListener {
-            Log.d("timber","???????????????????????")
-            val test = findViewById<ImageCalendarView>(R.id.image_calendar_view).title
-            findViewById<ImageCalendarView>(R.id.image_calendar_view).title = test+"z"
-        }
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_sample_calendar)
+        binding.lifecycleOwner = this
+
+        binding.vm = viewModel
+
     }
 }

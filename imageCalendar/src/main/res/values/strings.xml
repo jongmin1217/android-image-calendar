@@ -2,4 +2,6 @@
 <resources>
     <string name="select_calendar">select calendar</string>
     <string name="now">now</string>
+    <string name="kr">kr</string>
+    <string name="uk">uk</string>
 </resources>
