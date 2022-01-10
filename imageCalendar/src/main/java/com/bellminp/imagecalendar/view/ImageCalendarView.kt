@@ -58,7 +58,9 @@ class ImageCalendarView @JvmOverloads constructor(
     private fun observeLiveData(lifecycleOwner: LifecycleOwner) {
         with(viewModel){
             changeMonth.observe(lifecycleOwner,{
-                changeMonthListener.onChange(searchYear,searchMonth)
+                if(this@ImageCalendarView::changeMonthListener.isInitialized){
+                    changeMonthListener.onChange(searchYear,searchMonth)
+                }
             })
         }
     }
