@@ -1,5 +1,5 @@
 package com.bellminp.imagecalendar.listener
 
-interface TitleClickListener {
+interface CalendarClickListener {
     fun onClick()
 }

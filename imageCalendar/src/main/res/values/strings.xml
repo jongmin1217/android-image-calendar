@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="select_calendar">select calendar</string>
     <string name="now">now</string>
     <string name="kr">kr</string>
     <string name="uk">uk</string>
+
+    <string name="cancel_kr">취소</string>
+    <string name="apply_kr">적용</string>
+
+    <string name="cancel_uk" tools:ignore="ButtonCase">cancel</string>
+    <string name="apply_uk">apply</string>
 </resources>

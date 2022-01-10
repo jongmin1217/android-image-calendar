@@ -1,5 +1,7 @@
 package com.bellminp.imagecalendar.utils
 
+import android.annotation.SuppressLint
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Utils {
@@ -24,6 +26,30 @@ class Utils {
                 12 -> "December"
                 else -> "Other"
             }
+        }
+
+        fun lastDay(year : Int, month : Int) : Int{
+            val cal = Calendar.getInstance()
+
+            cal.set(year,month-1,1)
+
+            return cal.getActualMaximum(Calendar.DAY_OF_MONTH)
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun getDateDay(date: String, dateType: String): Int {
+
+            val dateFormat = SimpleDateFormat(dateType)
+            val nDate = dateFormat.parse(date)
+
+            nDate?.let {
+                val cal = Calendar.getInstance()
+                cal.time = it
+
+                return cal.get(Calendar.DAY_OF_WEEK)
+            }
+
+            return 0
         }
     }
 }

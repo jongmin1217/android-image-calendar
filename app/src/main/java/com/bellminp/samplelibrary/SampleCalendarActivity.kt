@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.bellminp.imagecalendar.listener.CalendarClickListener
 import com.bellminp.imagecalendar.view.ImageCalendarView
 import com.bellminp.samplelibrary.databinding.ActivitySampleCalendarBinding
 
@@ -20,6 +21,14 @@ class SampleCalendarActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         binding.vm = viewModel
+
+        binding.imageCalendarView.setOnClickListener {  }
+
+        binding.imageCalendarView.setOnCalendarClickListener(object : CalendarClickListener{
+            override fun onClick() {
+                TODO("Not yet implemented")
+            }
+        })
 
     }
 }
