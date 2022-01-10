@@ -30,6 +30,7 @@
             android:textColor="@color/gray_4"
             android:textStyle="bold"
             android:text="@{vm.title}"
+            android:clickable="@{vm.titleClickAble}"
             tools:ignore="SpUsage"/>
 
         <androidx.recyclerview.widget.RecyclerView

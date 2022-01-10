@@ -15,30 +15,27 @@ class ImageCalendarViewModel : ViewModel() {
     private fun <T : Any?> SingleLiveEvent<T>.default(initialValue: T) =
         apply { setValue(initialValue) }
 
+    private val _changeMonth = SingleLiveEvent<Unit>()
+
+    val changeMonth : LiveData<Unit> get() = _changeMonth
+
     val title = SingleLiveEvent<String>().default("")
 
     val calendarData = SingleLiveEvent<ArrayList<CalendarData>?>().default(null)
 
     var calendarType = 0
-    var initDate = String()
-        set(value) {
-            field = value
-
-            if (value == "now") {
-                searchYear = Utils.getYear()
-                searchMonth = Utils.getMonth()
-            } else {
-                searchYear = value.split(".")[0].toInt()
-                searchMonth = value.split(".")[1].toInt()
-            }
-            Log.d("timber","$searchYear $searchMonth")
-        }
-
     var language = String()
     var imageVisible = true
     var circleImage = false
     var defaultImage: Any? = null
+    var titleClickAble = true
     var tag = "main"
+
+    var initDate = String()
+        set(value) {
+            field = value
+            initDay()
+        }
 
     var searchYear = 0
     var searchMonth = 0
@@ -46,20 +43,27 @@ class ImageCalendarViewModel : ViewModel() {
     fun monthApply(year: Int, month: Int) {
         searchYear = year
         searchMonth = month
-        initTitle()
-        initCalendarItems()
+        initCalendar()
     }
 
-    fun initTitle(){
+    private fun initDay(){
+        if (initDate == "now") {
+            searchYear = Utils.getYear()
+            searchMonth = Utils.getMonth()
+        } else {
+            searchYear = initDate.split(".")[0].toInt()
+            searchMonth = initDate.split(".")[1].toInt()
+        }
+    }
+
+
+    fun initCalendar() {
         title.value = if (language == "kr"){
             String.format("%d년 %d월", searchYear, searchMonth)
         }else{
             String.format("%s %d", Utils.getUkMonth(searchMonth), searchYear)
         }
-    }
 
-
-    fun initCalendarItems() {
         val lastDay = Utils.lastDay(searchYear, searchMonth)
         val startDay = Utils.getDateDay(
             String.format(
@@ -75,7 +79,7 @@ class ImageCalendarViewModel : ViewModel() {
 
         if (startDay != 1) {
             for (i in 0 until startDay - 1) {
-                calendarItems.add(CalendarData(i, false, null, null, imageVisible, circleImage))
+                calendarItems.add(CalendarData(id = i))
             }
         }
 
@@ -84,7 +88,9 @@ class ImageCalendarViewModel : ViewModel() {
                 CalendarData(
                     if (calendarItems.isEmpty()) 0 else calendarItems[calendarItems.size - 1].id + 1,
                     true,
-                    (i + 1).toString(),
+                    searchYear,
+                    searchMonth,
+                    (i + 1),
                     defaultImage,
                     imageVisible,
                     circleImage
@@ -93,5 +99,6 @@ class ImageCalendarViewModel : ViewModel() {
         }
 
         calendarData.value = calendarItems
+        _changeMonth.value = Unit
     }
 }

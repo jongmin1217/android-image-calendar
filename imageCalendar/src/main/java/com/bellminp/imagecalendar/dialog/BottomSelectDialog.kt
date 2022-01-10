@@ -40,7 +40,7 @@ class BottomSelectDialog(private val viewModel: ImageCalendarViewModel) : Bottom
         binding.dpMonth.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
         binding.dpYear.maxValue = 2100
-        binding.dpYear.minValue = 1950
+        binding.dpYear.minValue = 1900
         binding.dpYear.wrapSelectorWheel = false
 
         binding.dpMonth.maxValue = 12

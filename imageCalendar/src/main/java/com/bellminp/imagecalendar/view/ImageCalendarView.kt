@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.pm.PermissionInfoCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -21,6 +22,7 @@ import com.bellminp.imagecalendar.base.MvvmFrameLayout
 import com.bellminp.imagecalendar.dialog.BottomSelectDialog
 import com.bellminp.imagecalendar.listener.CalendarClickListener
 import com.bellminp.imagecalendar.listener.CalendarListener
+import com.bellminp.imagecalendar.listener.ChangeMonthListener
 import com.bellminp.imagecalendar.model.CalendarData
 import com.bellminp.imagecalendar.model.DayData
 import com.bellminp.imagecalendar.utils.BindingAdapter
@@ -34,8 +36,10 @@ class ImageCalendarView @JvmOverloads constructor(
     CalendarListener {
 
     override val viewModel = ImageCalendarViewModel()
-    lateinit var binding: BmSelectCalendarBinding
+    private lateinit var binding: BmSelectCalendarBinding
 
+    private lateinit var calendarClickListener : CalendarClickListener
+    private lateinit var changeMonthListener: ChangeMonthListener
 
     private val calendarAdapter = CalendarAdapter(this)
 
@@ -52,7 +56,11 @@ class ImageCalendarView @JvmOverloads constructor(
     }
 
     private fun observeLiveData(lifecycleOwner: LifecycleOwner) {
-
+        with(viewModel){
+            changeMonth.observe(lifecycleOwner,{
+                changeMonthListener.onChange(searchYear,searchMonth)
+            })
+        }
     }
 
     private fun initBinding(context: Context, attrs: AttributeSet?) {
@@ -82,6 +90,9 @@ class ImageCalendarView @JvmOverloads constructor(
 
                 circleImage =
                     attributes.getBoolean(R.styleable.ImageCalendarView_circleImage, false)
+
+                titleClickAble =
+                    attributes.getBoolean(R.styleable.ImageCalendarView_titleClickAble,true)
 
                 if (attributes.hasValue(R.styleable.ImageCalendarView_defaultImageResource)) {
                     defaultImage =
@@ -123,14 +134,35 @@ class ImageCalendarView @JvmOverloads constructor(
 
             BindingAdapter.calendarAdapter(binding.recyclerviewCalendar, calendarAdapter)
 
-            initTitle()
-            initCalendarItems()
+            initCalendar()
         }
 
     }
 
-    fun setOnCalendarClickListener(listener : CalendarClickListener){
-        throw RuntimeException("Stub!")
+    fun setOnCalendarClickListener(listener : (CalendarData) -> Unit){
+        calendarClickListener = object : CalendarClickListener{
+            override fun onClick(calendarData: CalendarData) {
+                listener(calendarData)
+            }
+        }
+    }
+
+    fun setOnChangeMonthListener(listener: (Int,Int) -> Unit){
+        changeMonthListener = object : ChangeMonthListener{
+            override fun onChange(year: Int, month: Int) {
+                listener(year,month)
+            }
+        }
+    }
+
+    fun selectCalendar(year : Int, month : Int){
+        if(Utils.ableDate(year, month)){
+            with(viewModel){
+                searchYear = year
+                searchMonth = month
+                viewModel.initCalendar()
+            }
+        }
     }
 
 
@@ -160,6 +192,12 @@ class ImageCalendarView @JvmOverloads constructor(
     private fun getCalendarTypeName(): String {
         return if (viewModel.calendarType == R.layout.bm_select_calendar) resources.getString(R.string.select_calendar)
         else ""
+    }
+
+    override fun calendarClick(calendarData: CalendarData) {
+        if(this::calendarClickListener.isInitialized){
+            calendarClickListener.onClick(calendarData)
+        }
     }
 
 

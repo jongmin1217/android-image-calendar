@@ -12,7 +12,10 @@ abstract class MvvmFrameLayout<V : MvvmCustomViewState, T : ViewModel>(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), MvvmCustomView<V, T> {
+) : FrameLayout(context, attrs, defStyleAttr) {
+    internal abstract val viewModel : T
+    internal abstract fun onLifecycleOwnerAttached(lifecycleOwner: LifecycleOwner)
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         val lifecycleOwner = context as? LifecycleOwner ?: throw LifecycleOwnerNotFoundException()

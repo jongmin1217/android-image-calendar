@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.bellminp.imagecalendar.listener.CalendarClickListener
+import com.bellminp.imagecalendar.model.CalendarData
 import com.bellminp.imagecalendar.view.ImageCalendarView
 import com.bellminp.samplelibrary.databinding.ActivitySampleCalendarBinding
 
@@ -22,13 +23,17 @@ class SampleCalendarActivity : AppCompatActivity() {
 
         binding.vm = viewModel
 
-        binding.imageCalendarView.setOnClickListener {  }
+        binding.btn.setOnClickListener {
+            binding.imageCalendarView.selectCalendar(1994,12)
+        }
 
-        binding.imageCalendarView.setOnCalendarClickListener(object : CalendarClickListener{
-            override fun onClick() {
-                TODO("Not yet implemented")
-            }
-        })
+        binding.imageCalendarView.setOnChangeMonthListener { year, month ->
+            Log.d("timber","$year $month")
+        }
+
+        binding.imageCalendarView.setOnCalendarClickListener {
+            Log.d("timber","$it")
+        }
 
     }
 }

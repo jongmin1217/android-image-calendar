@@ -8,5 +8,6 @@
         <attr name="defaultImageResource" format="reference"/>
         <attr name="defaultImageUrl" format="string|reference"/>
         <attr name="circleImage" format="boolean|reference"/>
+        <attr name="titleClickAble" format="boolean|reference"/>
     </declare-styleable>
 </resources>

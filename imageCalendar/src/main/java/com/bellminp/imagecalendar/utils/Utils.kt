@@ -51,5 +51,9 @@ class Utils {
 
             return 0
         }
+
+        fun ableDate(year: Int,month: Int) : Boolean{
+            return year in 1900..2100 && month in 1..12
+        }
     }
 }

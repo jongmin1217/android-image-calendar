@@ -1,5 +1,7 @@
 package com.bellminp.imagecalendar.listener
 
+import com.bellminp.imagecalendar.model.CalendarData
+
 interface CalendarClickListener {
-    fun onClick()
+    fun onClick(calendarData: CalendarData)
 }
