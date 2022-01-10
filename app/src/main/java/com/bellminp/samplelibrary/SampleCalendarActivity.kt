@@ -14,7 +14,8 @@ class SampleCalendarActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.tv_test).setOnClickListener {
             Log.d("timber","???????????????????????")
-            findViewById<ImageCalendarView>(R.id.image_calendar_view).title = "zz"
+            val test = findViewById<ImageCalendarView>(R.id.image_calendar_view).title
+            findViewById<ImageCalendarView>(R.id.image_calendar_view).title = test+"z"
         }
     }
 }

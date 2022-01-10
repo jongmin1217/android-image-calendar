@@ -1,53 +1,47 @@
 package com.bellminp.imagecalendar.view
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.bellminp.imagecalendar.R
 import com.bellminp.imagecalendar.databinding.BmSelectCalendarBinding
 import com.bellminp.imagecalendar.utils.Utils
-import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.bellminp.imagecalendar.MyApp
-import timber.log.Timber
+import androidx.lifecycle.LifecycleOwner
+import com.bellminp.imagecalendar.base.MvvmFrameLayout
 
 class ImageCalendarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+) : MvvmFrameLayout<ImageCalendarViewState,ImageCalendarViewModel>(context, attrs, defStyleAttr) {
 
-    lateinit var viewModel : ImageCalendarViewModel
+    override val viewModel = ImageCalendarViewModel()
     lateinit var binding : BmSelectCalendarBinding
 
     private var calendarType = 0
     private var firstDate = String()
-
-    private lateinit var tvTitle : TextView
 
 
     var title : String = ""
         set(value) {
             field = value
             viewModel.title.value = value
-            viewModel.test()
         }
 
     init {
         initBinding(context,attrs)
     }
 
+    override fun onLifecycleOwnerAttached(lifecycleOwner: LifecycleOwner) {
+        observeLiveData(lifecycleOwner)
+    }
+
+    private fun observeLiveData(lifecycleOwner: LifecycleOwner) {
+
+    }
 
     private fun initBinding(context: Context, attrs: AttributeSet?) {
 
@@ -63,15 +57,11 @@ class ImageCalendarView @JvmOverloads constructor(
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = DataBindingUtil.inflate(inflater,calendarType,this,true)
 
-        viewModel = ViewModelProvider(context as ViewModelStoreOwner)[ImageCalendarViewModel::class.java]
-
         binding.vm = viewModel
         drawView()
     }
 
     private fun drawView(){
-        tvTitle = findViewById(R.id.tv_month)
-
         title = if(firstDate == resources.getString(R.string.now)) String.format("%d년 %d월",Utils.getYear(),Utils.getMonth())
         else String.format("%s년 %d월",firstDate.split(".")[0],firstDate.split(".")[1].toInt())
     }
@@ -82,6 +72,7 @@ class ImageCalendarView @JvmOverloads constructor(
         return if(calendarType == R.layout.bm_select_calendar) resources.getString(R.string.select_calendar)
         else ""
     }
+
 
 
 
