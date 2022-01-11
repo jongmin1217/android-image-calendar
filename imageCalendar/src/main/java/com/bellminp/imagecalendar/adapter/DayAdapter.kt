@@ -28,7 +28,7 @@ class DayAdapter(private val items : ArrayList<DayData>) : RecyclerView.Adapter<
         holder.bind(items[position])
     }
 
-    inner class ViewHolder(private val binding: ItemDayBinding):
+    class ViewHolder(private val binding: ItemDayBinding):
         RecyclerView.ViewHolder(binding.root){
 
         fun bind(dayData: DayData){

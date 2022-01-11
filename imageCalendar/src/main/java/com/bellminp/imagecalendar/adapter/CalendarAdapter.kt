@@ -19,7 +19,7 @@ class CalendarAdapter(private val listener : CalendarListener) : RecyclerView.Ad
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarHolder {
         val binding = ItemCalendarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CalendarHolder(binding)
+        return CalendarHolder(binding,listener)
     }
 
     override fun getItemCount(): Int {
@@ -35,7 +35,7 @@ class CalendarAdapter(private val listener : CalendarListener) : RecyclerView.Ad
         holder.bind(items[position])
     }
 
-    inner class CalendarHolder(private val binding: ItemCalendarBinding):
+    class CalendarHolder(private val binding: ItemCalendarBinding,private val listener: CalendarListener):
         RecyclerView.ViewHolder(binding.root){
 
         fun bind(calendarData: CalendarData){
