@@ -7,11 +7,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bellminp.imagecalendar.R
+import com.bellminp.imagecalendar.database.AppDatabase
 import com.bellminp.imagecalendar.model.CalendarData
+import com.bellminp.imagecalendar.model.RoomCalendarData
 import com.bellminp.imagecalendar.utils.SingleLiveEvent
 import com.bellminp.imagecalendar.utils.Utils
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
-class ImageCalendarViewModel : ViewModel() {
+class ImageCalendarViewModel(private val database: AppDatabase) : ViewModel() {
     private fun <T : Any?> SingleLiveEvent<T>.default(initialValue: T) =
         apply { setValue(initialValue) }
 
@@ -22,6 +28,9 @@ class ImageCalendarViewModel : ViewModel() {
     val title = SingleLiveEvent<String>().default("")
 
     val calendarData = SingleLiveEvent<ArrayList<CalendarData>?>().default(null)
+
+    private val compositeDisposable = CompositeDisposable()
+    private var observableDisposable : Disposable? = null
 
     var calendarType = 0
     var language = String()
@@ -56,8 +65,37 @@ class ImageCalendarViewModel : ViewModel() {
         }
     }
 
+    private fun addDisposable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
+    }
+
+    private fun removeDisposable(disposable: Disposable){
+        compositeDisposable.remove(disposable)
+    }
+
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
+    }
+
 
     fun initCalendar() {
+        observableDisposable?.let { removeDisposable(it) }
+
+        observableDisposable = database.roomCalendarDataDao().getCalendar(tag,searchYear,searchMonth)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ list ->
+                setCalendarItems(list)
+            }) {
+            }
+
+        observableDisposable?.let { addDisposable(it) }
+    }
+
+    private fun setCalendarItems(list : List<RoomCalendarData>){
+
         title.value = if (language == "kr"){
             String.format("%d년 %d월", searchYear, searchMonth)
         }else{
@@ -84,18 +122,34 @@ class ImageCalendarViewModel : ViewModel() {
         }
 
         for (i in 0 until lastDay) {
-            calendarItems.add(
-                CalendarData(
-                    if (calendarItems.isEmpty()) 0 else calendarItems[calendarItems.size - 1].id + 1,
-                    true,
-                    searchYear,
-                    searchMonth,
-                    (i + 1),
-                    defaultImage,
-                    imageVisible,
-                    circleImage
+            val index = list.indexOfFirst { it.year == searchYear && it.month == searchMonth && it.day == i+1 && it.tag == tag }
+            if(index == -1){
+                calendarItems.add(
+                    CalendarData(
+                        if (calendarItems.isEmpty()) 0 else calendarItems[calendarItems.size - 1].id + 1,
+                        true,
+                        searchYear,
+                        searchMonth,
+                        (i + 1),
+                        defaultImage,
+                        imageVisible,
+                        circleImage
+                    )
                 )
-            )
+            }else{
+                calendarItems.add(
+                    CalendarData(
+                        if (calendarItems.isEmpty()) 0 else calendarItems[calendarItems.size - 1].id + 1,
+                        true,
+                        searchYear,
+                        searchMonth,
+                        (i + 1),
+                        list[index].imageUrl,
+                        imageVisible,
+                        circleImage
+                    )
+                )
+            }
         }
 
         calendarData.value = calendarItems

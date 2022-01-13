@@ -3,6 +3,7 @@ package com.bellminp.imagecalendar.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.bellminp.imagecalendar.databinding.ItemCalendarBinding
 import com.bellminp.imagecalendar.listener.CalendarListener

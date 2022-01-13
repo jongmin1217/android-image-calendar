@@ -10,6 +10,8 @@ class Utils {
         fun getMonth(): Int = Calendar.getInstance().get(Calendar.MONTH) + 1
         fun getDay(): Int = Calendar.getInstance().get(Calendar.DATE)
 
+        fun getUnixTime(): Long = System.currentTimeMillis()
+
         fun getUkMonth(month : Int) : String{
             return when(month){
                 1 -> "January"

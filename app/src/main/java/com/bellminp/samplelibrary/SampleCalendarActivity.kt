@@ -6,8 +6,10 @@ import android.util.Log
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import com.bellminp.imagecalendar.database.ImageCalendar
 import com.bellminp.imagecalendar.listener.CalendarClickListener
 import com.bellminp.imagecalendar.model.CalendarData
+import com.bellminp.imagecalendar.model.RoomCalendarData
 import com.bellminp.imagecalendar.view.ImageCalendarView
 import com.bellminp.samplelibrary.databinding.ActivitySampleCalendarBinding
 
@@ -24,7 +26,9 @@ class SampleCalendarActivity : AppCompatActivity() {
         binding.vm = viewModel
 
         binding.btn.setOnClickListener {
-            binding.imageCalendarView.selectCalendar(1994,12)
+            for(i in 0..12){
+                ImageCalendar(this).deleteCalendar(i.toLong())
+            }
         }
 
         binding.imageCalendarView.setOnChangeMonthListener { year, month ->

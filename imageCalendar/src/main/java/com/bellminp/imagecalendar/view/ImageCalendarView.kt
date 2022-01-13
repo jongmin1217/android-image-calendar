@@ -2,6 +2,7 @@ package com.bellminp.imagecalendar.view
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
 import android.view.ContextThemeWrapper
@@ -19,6 +20,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.bellminp.imagecalendar.adapter.CalendarAdapter
 import com.bellminp.imagecalendar.adapter.DayAdapter
 import com.bellminp.imagecalendar.base.MvvmFrameLayout
+import com.bellminp.imagecalendar.database.AppDatabase
 import com.bellminp.imagecalendar.dialog.BottomSelectDialog
 import com.bellminp.imagecalendar.listener.CalendarClickListener
 import com.bellminp.imagecalendar.listener.CalendarListener
@@ -35,13 +37,14 @@ class ImageCalendarView @JvmOverloads constructor(
 ) : MvvmFrameLayout<ImageCalendarViewState, ImageCalendarViewModel>(context, attrs, defStyleAttr),
     CalendarListener {
 
-    override val viewModel = ImageCalendarViewModel()
+    override val viewModel = ImageCalendarViewModel(AppDatabase.getInstance(context))
     private lateinit var binding: BmSelectCalendarBinding
 
     private lateinit var calendarClickListener : CalendarClickListener
     private lateinit var changeMonthListener: ChangeMonthListener
 
     private val calendarAdapter = CalendarAdapter(this)
+
 
     init {
         initBinding(context, attrs)
