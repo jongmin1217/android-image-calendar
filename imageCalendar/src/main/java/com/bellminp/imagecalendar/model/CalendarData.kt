@@ -5,8 +5,13 @@ data class CalendarData(
     val visible : Boolean = false,
     val year : Int = 0,
     val month : Int = 0,
-    val day : Int? = null,
+    val day : Int = 0,
     val image : Any? = null,
     val imageVisible : Boolean = false,
     val circleImage : Boolean = false
-)
+){
+    fun dayText() : String?{
+        return if(day == 0) null
+        else day.toString()
+    }
+}

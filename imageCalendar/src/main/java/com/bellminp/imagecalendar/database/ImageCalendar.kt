@@ -12,29 +12,20 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlin.coroutines.coroutineContext
 
-class ImageCalendar(context : Context) {
-    companion object{
-        @SuppressLint("StaticFieldLeak")
-        lateinit var mInstance: ImageCalendar
-        fun get(): ImageCalendar {
-            return mInstance
-        }
-    }
-
+class ImageCalendar(private val context: Context) {
     private val compositeDisposable = CompositeDisposable()
-
     private var database: AppDatabase = AppDatabase.getInstance(context)
 
     private fun addDisposable(disposable: Disposable) {
         compositeDisposable.add(disposable)
     }
 
-    fun deleteCalendar(id : Long){
-        addDisposable(database.roomCalendarDataDao().delete(id)
+    fun deleteCalendar(tag: String, year: Int,month: Int,day: Int){
+        addDisposable(database.roomCalendarDataDao().delete(tag, year, month, day)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-
+                Log.d("timber","delete ok")
             }) {
                 Log.d("timber","delete error $it")
             })
@@ -49,7 +40,17 @@ class ImageCalendar(context : Context) {
             day,
             tag,
             Utils.getUnixTime(),
-            if(image is String) image else null,
+            when(image){
+                is String -> image
+                is Uri -> image.toString()
+                is Int -> {
+                    val iconName = context.resources.getResourceEntryName(image)
+                    val resId = context.resources.getIdentifier(iconName,"drawable",context.packageName)
+                    Log.d("timber","$resId")
+                    resId.toString()
+                }
+                else -> null
+            },
             textColor
         )
 
@@ -58,7 +59,7 @@ class ImageCalendar(context : Context) {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-
+                Log.d("timber","insert ok")
             }) {
                 Log.d("timber","insert error $it")
             })

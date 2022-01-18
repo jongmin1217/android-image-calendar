@@ -1,6 +1,7 @@
 package com.bellminp.imagecalendar.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.ui.graphics.Color
@@ -15,6 +16,7 @@ class CalendarAdapter(private val listener : CalendarListener) : RecyclerView.Ad
     var items = ArrayList<CalendarData>()
         set(value){
             field = value
+            Log.d("timber","$value")
             notifyDataSetChanged()
         }
 

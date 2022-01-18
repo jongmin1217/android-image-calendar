@@ -20,15 +20,44 @@
             app:layout_constraintTop_toTopOf="parent"
             app:language="uk"
             app:circleImage="true"
-            app:defaultImageResource="@drawable/ic_launcher_background"
+            />
+
+        <EditText
+            android:id="@+id/test_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/image_calendar_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/test_2"
+            />
+
+        <EditText
+            android:id="@+id/test_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/image_calendar_view"
+            app:layout_constraintStart_toEndOf="@id/test_1"
+            app:layout_constraintEnd_toStartOf="@id/test_3"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/test_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/image_calendar_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/test_2"
+            android:inputType="number"
             />
 
         <Button
             android:id="@+id/btn"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:layout_constraintTop_toBottomOf="@id/image_calendar_view"
+            app:layout_constraintTop_toBottomOf="@id/test_3"
             app:layout_constraintStart_toStartOf="parent"
+            android:inputType="number"
             />
 
 

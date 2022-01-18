@@ -57,5 +57,17 @@ class Utils {
         fun ableDate(year: Int,month: Int) : Boolean{
             return year in 1900..2100 && month in 1..12
         }
+
+        fun chkNum(str: String) : Boolean {
+            var temp: Char
+            var result = true
+            for (i in str.indices) {
+                temp = str.elementAt(i)
+                if (temp.code < 48 || temp.code > 57) {
+                    result = false }
+            }
+            return result
+        }
+
     }
 }

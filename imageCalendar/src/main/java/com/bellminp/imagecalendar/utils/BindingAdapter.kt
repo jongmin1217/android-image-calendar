@@ -1,5 +1,6 @@
 package com.bellminp.imagecalendar.utils
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
@@ -55,8 +56,20 @@ object BindingAdapter {
     @JvmStatic
     fun setImage(imageView: ImageView, url: Any?) {
         url?.let {
+            val imageUrl = when(it){
+                is String -> {
+                    val isNumeric = Utils.chkNum(it)
+                    if(isNumeric) it.toInt()
+                    else it
+                }
+                is Int -> {
+                    it
+                }
+                else -> return
+            }
+
             Glide.with(imageView)
-                .load(it)
+                .load(imageUrl)
                 .into(imageView)
         }
     }

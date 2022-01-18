@@ -95,6 +95,7 @@ class ImageCalendarViewModel(private val database: AppDatabase) : ViewModel() {
     }
 
     private fun setCalendarItems(list : List<RoomCalendarData>){
+        Log.d("timber","$list")
 
         title.value = if (language == "kr"){
             String.format("%d년 %d월", searchYear, searchMonth)
