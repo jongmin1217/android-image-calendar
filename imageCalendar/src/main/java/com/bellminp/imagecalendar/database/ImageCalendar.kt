@@ -1,16 +1,18 @@
 package com.bellminp.imagecalendar.database
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.bellminp.imagecalendar.listener.DeleteCalendarCallback
+import com.bellminp.imagecalendar.listener.InsertCalendarCallback
+import com.bellminp.imagecalendar.model.DeleteCalendarData
+import com.bellminp.imagecalendar.model.InsertCalendarData
 import com.bellminp.imagecalendar.model.RoomCalendarData
 import com.bellminp.imagecalendar.utils.Utils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlin.coroutines.coroutineContext
 
 class ImageCalendar(private val context: Context) {
     private val compositeDisposable = CompositeDisposable()
@@ -20,48 +22,63 @@ class ImageCalendar(private val context: Context) {
         compositeDisposable.add(disposable)
     }
 
-    fun deleteCalendar(tag: String, year: Int,month: Int,day: Int){
-        addDisposable(database.roomCalendarDataDao().delete(tag, year, month, day)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d("timber","delete ok")
-            }) {
-                Log.d("timber","delete error $it")
-            })
+    fun deleteCalendar(deleteCalendarData: DeleteCalendarData, callback: DeleteCalendarCallback){
+        deleteCalendar(listOf(deleteCalendarData),callback)
     }
 
-
-    fun addCalendar(year : Int, month : Int, day : Int, tag : String, image : Any, textColor : Int?=null){
-        val data = RoomCalendarData(
-            0,
-            year,
-            month,
-            day,
-            tag,
-            Utils.getUnixTime(),
-            when(image){
-                is String -> image
-                is Uri -> image.toString()
-                is Int -> {
-                    val iconName = context.resources.getResourceEntryName(image)
-                    val resId = context.resources.getIdentifier(iconName,"drawable",context.packageName)
-                    Log.d("timber","$resId")
-                    resId.toString()
-                }
-                else -> null
-            },
-            textColor
+    fun deleteCalendar(deleteCalendarData: List<DeleteCalendarData>, callback: DeleteCalendarCallback) {
+        addDisposable(database.roomCalendarDataDao().delete(
+            deleteCalendarData
         )
-
-
-        addDisposable(database.roomCalendarDataDao().insertCalendar(data)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("timber","insert ok")
+                callback.onSuccess()
             }) {
-                Log.d("timber","insert error $it")
+                callback.onFail(it)
             })
     }
+
+
+    fun addCalendar(insertCalendarData: InsertCalendarData, callback: InsertCalendarCallback) {
+        addCalendar(listOf(insertCalendarData),callback)
+    }
+    
+   fun addCalendar(insertCalendarData: List<InsertCalendarData>,callback: InsertCalendarCallback){
+       val list = insertCalendarData.map {
+           RoomCalendarData(
+               0,
+               it.year,
+               it.month,
+               it.day,
+               it.tag,
+               Utils.getUnixTime(),
+               when (it.image) {
+                   is String -> it.image
+                   is Uri -> it.image.toString()
+                   is Int -> {
+                       val iconName = context.resources.getResourceEntryName(it.image)
+                       val resId =
+                           context.resources.getIdentifier(iconName, "drawable", context.packageName)
+                       resId.toString()
+                   }
+                   else -> null
+               },
+               it.textColor
+           )
+       }
+
+       addDisposable(database.roomCalendarDataDao().insertCalendar(list)
+           .subscribeOn(Schedulers.io())
+           .observeOn(AndroidSchedulers.mainThread())
+           .subscribe({
+               callback.onSuccess()
+           }) {
+               callback.onFail(it)
+           })
+   }
+
+
+
+
 }

@@ -55,22 +55,21 @@ object BindingAdapter {
     @BindingAdapter("setImage")
     @JvmStatic
     fun setImage(imageView: ImageView, url: Any?) {
-        url?.let {
-            val imageUrl = when(it){
+        val glide = Glide.with(imageView)
+        if(url != null){
+            val imageUrl = when(url){
                 is String -> {
-                    val isNumeric = Utils.chkNum(it)
-                    if(isNumeric) it.toInt()
-                    else it
+                    val isNumeric = Utils.chkNum(url)
+                    if(isNumeric) url.toInt()
+                    else url
                 }
-                is Int -> {
-                    it
-                }
+                is Int -> url
                 else -> return
             }
 
-            Glide.with(imageView)
-                .load(imageUrl)
-                .into(imageView)
+            glide.load(imageUrl).into(imageView)
+        }else{
+            glide.clear(imageView)
         }
     }
 

@@ -16,7 +16,6 @@ class CalendarAdapter(private val listener : CalendarListener) : RecyclerView.Ad
     var items = ArrayList<CalendarData>()
         set(value){
             field = value
-            Log.d("timber","$value")
             notifyDataSetChanged()
         }
 
