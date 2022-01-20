@@ -78,7 +78,30 @@ class SampleCalendarActivity : AppCompatActivity() {
             )
         }
 
+        binding.btn2.setOnClickListener {
+            val item = listOf(DeleteCalendarData(
+                "main",2022, 1, 1
+            ),DeleteCalendarData(
+                "main",2022, 1, 2
+            ),DeleteCalendarData(
+                "main",2022, 1, 3
+            ),DeleteCalendarData(
+                "main",2022, 1, 4
+            ))
 
+            ImageCalendar(this).deleteCalendar(
+                item,
+                object : DeleteCalendarCallback {
+                    override fun onSuccess() {
+                        Log.d("timber", "delete success")
+                    }
+
+                    override fun onFail(error: Throwable) {
+                        Log.d("timber", "delete error $error")
+                    }
+                }
+            )
+        }
 
         binding.imageCalendarView.setOnChangeMonthListener { year, month ->
 

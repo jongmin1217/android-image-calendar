@@ -27,16 +27,16 @@ class ImageCalendar(private val context: Context) {
     }
 
     fun deleteCalendar(deleteCalendarData: List<DeleteCalendarData>, callback: DeleteCalendarCallback) {
-        addDisposable(database.roomCalendarDataDao().delete(
-            deleteCalendarData
-        )
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                callback.onSuccess()
-            }) {
-                callback.onFail(it)
-            })
+        for(deleteData in deleteCalendarData){
+            addDisposable(database.roomCalendarDataDao().delete(deleteData.tag,deleteData.year,deleteData.month,deleteData.day)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    callback.onSuccess()
+                }) {
+                    callback.onFail(it)
+                })
+        }
     }
 
 

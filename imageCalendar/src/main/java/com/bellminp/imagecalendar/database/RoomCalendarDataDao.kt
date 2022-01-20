@@ -25,6 +25,6 @@ interface RoomCalendarDataDao {
     @Update
     fun updateCalendar(roomCalendarData: RoomCalendarData): Completable
 
-    @Query("DELETE FROM bm_calendar WHERE tag in (:deleteCalendarData) AND year in (:deleteCalendarData) AND month in (:deleteCalendarData) AND day in (:deleteCalendarData)")
-    fun delete(deleteCalendarData: List<DeleteCalendarData>): Completable
+    @Query("DELETE FROM bm_calendar WHERE tag = :tag AND year = :year AND month = :month AND day = :day")
+    fun delete(tag: String, year: Int, month: Int, day: Int): Completable
 }
